@@ -1,9 +1,10 @@
 // creating the quantum program
 use bra_ket::*;
-use log::info;
+use log::{info, LevelFilter};
 
 #[test]
 fn main() {
+    env_logger::builder().filter_level(LevelFilter::Info).parse_default_env().init();
 
     // creating the quantum program
     let mut program = Program::new();

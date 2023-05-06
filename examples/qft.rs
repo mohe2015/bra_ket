@@ -1,5 +1,5 @@
 use bra_ket::*;
-use log::info;
+use log::{info, LevelFilter};
 use std::time::{Instant};
 use gnuplot::{Figure, Caption, Color, AxesCommon};
 
@@ -33,6 +33,8 @@ fn time_and_average<T: StateTraits>(program: Program, state: &mut T) -> (usize, 
 }
 
 fn main() {
+    env_logger::builder().filter_level(LevelFilter::Info).parse_default_env().init();
+
     //vectors to hold the data relating to timing the evolution of state vectors of various sizes
     let n_state_vector = Vec::from_iter(1..25);
     let mut means_state_vector: Vec<f32> = Vec::with_capacity(n_state_vector.len());

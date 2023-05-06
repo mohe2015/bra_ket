@@ -1,8 +1,10 @@
 use bra_ket::*;
-use log::info;
+use log::{info, LevelFilter};
 
 #[test]
 fn grover_two_qubit() {
+    env_logger::builder().filter_level(LevelFilter::Info).parse_default_env().init();
+
     let mut program = Program::new();
 
     program.h(0);

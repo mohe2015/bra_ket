@@ -1,7 +1,7 @@
 use bra_ket::*;
-use log::info;
+use log::{info, LevelFilter};
 fn main() {
-
+    env_logger::builder().filter_level(LevelFilter::Info).parse_default_env().init();
     let mut program = Program::new();
     program.h(0);
     program.cnot(0, 1);

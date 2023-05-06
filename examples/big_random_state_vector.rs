@@ -1,6 +1,8 @@
 use bra_ket::*;
-use log::info;
+use log::{info, LevelFilter};
 fn main() {
+    env_logger::builder().filter_level(LevelFilter::Info).parse_default_env().init();
+
     let number_of_qubits = 28;
 
     let mut program = Program::new();

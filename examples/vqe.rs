@@ -1,7 +1,7 @@
 use itertools_num::linspace;
 use bra_ket::*;
 use gnuplot::{Figure, Caption, Color, AxesCommon};
-use log::info;
+use log::{info, LevelFilter};
 
 /// makes the ansatz circuit to prepare the quantum state
 fn make_ansatz(theta: &Real) -> Program {
@@ -99,6 +99,8 @@ fn evaluate_energy(theta: &Real) -> Real {
 }
 
 fn main() {
+    env_logger::builder().filter_level(LevelFilter::Info).parse_default_env().init();
+
     let n = 100;
     let theta_s = RVector::from_iterator(n, linspace::<Real>(- PI, PI, n));
     let energies =  RVector::from_iterator(n,theta_s

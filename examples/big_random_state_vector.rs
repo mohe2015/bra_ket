@@ -1,4 +1,5 @@
 use bra_ket::*;
+use log::info;
 fn main() {
     let number_of_qubits = 28;
 
@@ -14,5 +15,5 @@ fn main() {
 
     program.run(&mut state_vector);
 
-    println!("{}", state_vector);
+    info!("{}", state_vector);
 }

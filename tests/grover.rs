@@ -1,4 +1,5 @@
 use bra_ket::*;
+use log::info;
 
 #[test]
 fn grover_two_qubit() {
@@ -24,7 +25,7 @@ fn grover_two_qubit() {
     program.run(&mut state);
     program.draw();
 
-    println!("{:?}", state)
+    info!("{:?}", state)
 
 }
 

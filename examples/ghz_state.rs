@@ -1,4 +1,5 @@
 use bra_ket::*;
+use log::info;
 fn main() {
 
     let mut program = Program::new();
@@ -17,5 +18,5 @@ fn main() {
     program.run(&mut state);
 
     // printing the final state
-    println!("{}", state);
+    info!("{}", state);
 }

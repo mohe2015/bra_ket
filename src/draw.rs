@@ -1,3 +1,5 @@
+use log::info;
+
 use crate::operations::Operations;
 use crate::{PI, Program};
 use std::iter::zip;
@@ -22,15 +24,15 @@ pub fn draw_circuit(program: &Program) {
     for string in circuit.iter_mut() {
         string.push_str("||")
     }
-    println!("_____________________________");
-    println!("****** Quantum Circuit ******");
-    println!("");
+    info!("_____________________________");
+    info!("****** Quantum Circuit ******");
+    info!("");
     for line in circuit.iter_mut() {
-        println!("{:#?}", line);
+        info!("{:#?}", line);
     }
-    println!("");
-    println!("*****************************");
-    println!("_____________________________");
+    info!("");
+    info!("*****************************");
+    info!("_____________________________");
 }
 //
 fn plot_gate(gate: &Operations, qubit_index: &usize) -> String {

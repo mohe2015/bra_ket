@@ -4,6 +4,7 @@ vector and density matrix.
 
 ```rust
 use bra_ket::*;
+use log::info;
 fn main() {
    
     // creating the quantum program 
@@ -25,8 +26,8 @@ fn main() {
     program.run(&mut density_matrix);
 
     // printing the final state vector / density matrix
-    println!("state vector \n{}", state_vector);
-    println!("density matrix \n{}", density_matrix);
+    info!("state vector \n{}", state_vector);
+    info!("density matrix \n{}", density_matrix);
 }
 
 ```

@@ -1,6 +1,7 @@
 use itertools_num::linspace;
 use bra_ket::*;
 use gnuplot::{Figure, Caption, Color, AxesCommon};
+use log::info;
 
 /// makes the ansatz circuit to prepare the quantum state
 fn make_ansatz(theta: &Real) -> Program {
@@ -109,8 +110,8 @@ fn main() {
     let (arg_min, energy_min) = energies.argmin();
     let theta_min = theta_s[arg_min];
 
-    println!("Minimum theta: {} (radians)", theta_min as f32);
-    println!("Minimum energy: {} (hartrees)", energy_min as f32);
+    info!("Minimum theta: {} (radians)", theta_min as f32);
+    info!("Minimum energy: {} (hartrees)", energy_min as f32);
 
     let mut fg = Figure::new();
     fg.axes2d()

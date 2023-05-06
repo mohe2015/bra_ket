@@ -1,4 +1,5 @@
 use bra_ket::*;
+use log::info;
 fn main() {
     let number_of_qubits = 14;
 
@@ -14,5 +15,5 @@ fn main() {
 
     program.run(&mut density_matrix);
 
-    println!("{}", density_matrix);
+    info!("{}", density_matrix);
 }

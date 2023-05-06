@@ -1,5 +1,6 @@
 // creating the quantum program
 use bra_ket::*;
+use log::info;
 
 #[test]
 fn main() {
@@ -23,6 +24,6 @@ fn main() {
     program.run(&mut density_matrix);
 
     // printing the final state vector / density matrix
-    println!("{}", state_vector);
-    println!("{}", density_matrix);
+    info!("{}", state_vector);
+    info!("{}", density_matrix);
 }

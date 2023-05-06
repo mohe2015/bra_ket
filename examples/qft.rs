@@ -1,4 +1,5 @@
 use bra_ket::*;
+use log::info;
 use std::time::{Instant};
 use gnuplot::{Figure, Caption, Color, AxesCommon};
 
@@ -37,7 +38,7 @@ fn main() {
     let mut means_state_vector: Vec<f32> = Vec::with_capacity(n_state_vector.len());
     let mut stds_state_vector: Vec<Option<f32>> = Vec::with_capacity(n_state_vector.len());
 
-    println!("\nState Vector");
+    info!("\nState Vector");
     for n in &n_state_vector {
         // creating a the quantum fourier transform program
         let program = qft(*n);
@@ -53,7 +54,7 @@ fn main() {
             None => format!("The qft of {} qubits took {}s (averaged over 1 run)",
                             n, mean)
         };
-        println!("{}", message)
+        info!("{}", message)
     };
 
     //vectors to hold the data relating to timing the evolution of density matrix of various sizes
@@ -61,7 +62,7 @@ fn main() {
     let mut means_density_matrix: Vec<f32> = Vec::with_capacity(n_state_vector.len());
     let mut stds_density_matrix: Vec<Option<f32>> = Vec::with_capacity(n_state_vector.len());
 
-    println!("\nDensity Matrix");
+    info!("\nDensity Matrix");
     for n in &n_density_matrix {
         // creating the quantum fourier transform program
         let program = qft(*n);
@@ -77,7 +78,7 @@ fn main() {
             None => format!("The qft of {} qubits took {}s (averaged over 1 run)",
                             n, mean)
         };
-        println!("{}", message)
+        info!("{}", message)
     };
 
     let mut fg = Figure::new();

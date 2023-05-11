@@ -5,7 +5,7 @@ use rayon::prelude::*;
 use std::mem::size_of_val;
 use std::fmt;
 
-use log::debug;
+use log::{debug, info};
 
 use crate::helper_functions::*;
 
@@ -33,7 +33,9 @@ impl fmt::Display for StateVector {
 
 impl Clone for StateVector {
     fn clone(&self) -> Self {
-        StateVector::from(self.state_vector.clone())
+        let mut clone = StateVector::from(self.state_vector.clone());
+        clone.classical_register = self.classical_register.clone();
+        clone
     }
 }
 
@@ -116,6 +118,7 @@ impl StateTraits for StateVector {
         let qubit_state = dist.sample(&mut rng);
 
         // updating the classical register
+        info!("updating classical register {}", target);
         self.classical_register[target.to_owned()] = Some(qubit_state == 1);
 
         // updating the state vector

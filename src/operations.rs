@@ -34,7 +34,8 @@ pub enum Operations {
     SISWAP(usize, usize),
     ArbitaryTwo(usize, usize, Matrix4x4),
     ISWAP(usize, usize),
-    SWAP(usize, usize)
+    SWAP(usize, usize),
+    CH(usize, usize),
 }
 
 pub fn implement_gate<
@@ -96,6 +97,7 @@ pub fn implement_gate<
         Operations::SISWAP(control, target) => state.two_qubit_gate(target, control, &SISWAP),
         Operations::SWAP(control, target) => state.two_qubit_gate(target, control, &SWAP),
         Operations::ArbitaryTwo(control, target, u) => state.two_qubit_gate(control, target, u),
+        Operations::CH(control, target) => state.two_qubit_gate(target, control, &CH),
     }
 }
 
@@ -124,5 +126,6 @@ pub fn which_qubits(gate: &Operations) -> Vec<&usize> {
         Operations::SISWAP(control, target) => vec![control, target],
         Operations::SWAP(control, target) => vec![control, target],
         Operations::ArbitaryTwo(control, target, _) => vec![control, target],
+        Operations::CH(control, target) => vec![control, target],
     }
 }

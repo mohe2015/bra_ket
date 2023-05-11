@@ -77,6 +77,13 @@ pub static H: Matrix2x2 = matrix![
     c!(1. / SQRT_2 as Real, 0.), c!(-1. / SQRT_2 as Real, 0.);
 ];
 
+pub static CH: Matrix4x4 = matrix![
+    c!(1., 0.), c!(0., 0.),c!(0., 0.),c!(0., 0.);
+    c!(0., 0.), c!(1., 0.),c!(0., 0.),c!(0., 0.);
+    c!(0., 0.), c!(0., 0.),c!(1. / SQRT_2 as Real, 0.),c!(1. / SQRT_2 as Real, 0.);
+    c!(0., 0.), c!(0., 0.),c!(1. / SQRT_2 as Real, 0.),c!(-1. / SQRT_2 as Real, 0.);
+];
+
 pub static CNOT: Matrix4x4 = matrix![
     c!(1., 0.), c!(0., 0.),c!(0., 0.),c!(0., 0.);
     c!(0., 0.), c!(1., 0.),c!(0., 0.),c!(0., 0.);

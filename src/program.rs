@@ -132,6 +132,10 @@ impl Program {
     pub fn s(&mut self, qubit: usize) {
         self.add_gate(Operations::S(qubit))
     }
+
+    pub fn ch(&mut self, control: usize, target: usize) {
+        self.add_gate(Operations::CH(control, target))
+    }
 }
 
 #[cfg(test)]

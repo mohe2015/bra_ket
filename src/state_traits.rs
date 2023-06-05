@@ -4,6 +4,7 @@ use crate::types::Real;
 /// The traits every quantum state must possess to permit it being acted upon by a quantum program.
 /// In our case both the StateVector and DensityMatrix implement these traits.
 pub trait StateTraits {
+    fn new(number_of_qubits: usize) -> Self;
     /// Checks the qubit number to make sure it is compatible with the quantum program.
     fn check_qubit_number(&self, qubits: Vec<&usize>);
     /// Reinitialises all qubits in their ground state.

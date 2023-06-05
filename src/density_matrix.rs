@@ -27,6 +27,38 @@ impl fmt::Display for DensityMatrix {
 }
 
 impl StateTraits for DensityMatrix {
+    fn new(number_of_qubits: usize) -> DensityMatrix {
+        // calculating the hilbert dim
+        let hilbert_dim = 1 << number_of_qubits;
+        let mut density_matrix = {
+            // printing the size of the density matrix to be created
+            {
+                let density_matrix_footprint = (hilbert_dim * hilbert_dim) * size_of_val(&Complex::new(0., 0.));
+                let bytes_to_gigabyte: u64 = 1 << 30;
+                debug!(
+                    "Allocating density matrix of size: {:.4} Gb",
+                    (density_matrix_footprint as f64) / (bytes_to_gigabyte as f64)
+                );
+            }
+
+            // creating the density matrix
+            let mut rho = CMatrix::from_element(hilbert_dim, hilbert_dim, Complex::new(0., 0.));
+            // setting the (0, 0) element to 1 to represent initialisation in the |000...> state
+            rho[(0, 0)] = Complex::new(1., 0.);
+            rho
+        };
+        let density_matrix_pointer = DensityMatrixPointer::new(
+            &mut density_matrix[(0, 0)],
+            (1 << &number_of_qubits, 1 << &number_of_qubits),
+        );
+
+        DensityMatrix {
+            number_of_qubits,
+            density_matrix,
+            density_matrix_pointer,
+        }
+    }
+    
     fn check_qubit_number(&self, qubits: Vec<&usize>) {
         let required_number_of_qubits = qubits.last().unwrap();
         let number_of_qubits = &self.number_of_qubits;
@@ -207,38 +239,6 @@ impl From<StateVector> for DensityMatrix {
 }
 
 impl DensityMatrix {
-    pub fn new(number_of_qubits: usize) -> DensityMatrix {
-        // calculating the hilbert dim
-        let hilbert_dim = 1 << number_of_qubits;
-        let mut density_matrix = {
-            // printing the size of the density matrix to be created
-            {
-                let density_matrix_footprint = (hilbert_dim * hilbert_dim) * size_of_val(&Complex::new(0., 0.));
-                let bytes_to_gigabyte: u64 = 1 << 30;
-                debug!(
-                    "Allocating density matrix of size: {:.4} Gb",
-                    (density_matrix_footprint as f64) / (bytes_to_gigabyte as f64)
-                );
-            }
-
-            // creating the density matrix
-            let mut rho = CMatrix::from_element(hilbert_dim, hilbert_dim, Complex::new(0., 0.));
-            // setting the (0, 0) element to 1 to represent initialisation in the |000...> state
-            rho[(0, 0)] = Complex::new(1., 0.);
-            rho
-        };
-        let density_matrix_pointer = DensityMatrixPointer::new(
-            &mut density_matrix[(0, 0)],
-            (1 << &number_of_qubits, 1 << &number_of_qubits),
-        );
-
-        DensityMatrix {
-            number_of_qubits,
-            density_matrix,
-            density_matrix_pointer,
-        }
-    }
-
     pub fn is_pure(&self) -> bool {
         let trace = (&self.density_matrix * &self.density_matrix).trace();
         trace.re > (1. - COMPARISON_PRECISION)

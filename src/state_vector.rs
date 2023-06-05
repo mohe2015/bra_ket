@@ -58,6 +58,37 @@ impl From<CVector> for StateVector {
 }
 
 impl StateTraits for StateVector {
+    fn new(number_of_qubits: usize) -> StateVector {
+        // calculating the hilbert dim
+        let hilbert_dim = 1 << number_of_qubits;
+        let mut state_vector = {
+            // printing the size of the state vector to be created
+            {
+                let state_vector_footprint = hilbert_dim * size_of_val(&Complex::new(0., 0.));
+                let bytes_to_gigabyte: u64 = 1 << 30;
+                debug!(
+                    "Allocating state vector of size: {:.4} Gb",
+                    (state_vector_footprint as f64) / (bytes_to_gigabyte as f64)
+                );
+            }
+
+            // creating the state vector
+            let mut state_vector = CVector::from_element(hilbert_dim, Complex::new(0., 0.));
+            // setting the (0, 0) element to 1 to represent initialisation in the |000...> state
+            state_vector[0] = Complex::new(1., 0.);
+            state_vector
+        };
+        let state_vector_pointer = StateVectorPointer::new(&mut state_vector[0], hilbert_dim);
+
+        let classical_register = vec![None; number_of_qubits];
+
+        StateVector {
+            number_of_qubits,
+            state_vector,
+            state_vector_pointer,
+            classical_register,
+        }
+    }
 
     /// Checks that the number of qubits required by a program is compatible with the number of qubits in the state vector.
     fn check_qubit_number(&self, qubits: Vec<&usize>) {
@@ -244,38 +275,6 @@ impl PartialEq for StateVector {
 
 
 impl StateVector {
-    pub fn new(number_of_qubits: usize) -> StateVector {
-        // calculating the hilbert dim
-        let hilbert_dim = 1 << number_of_qubits;
-        let mut state_vector = {
-            // printing the size of the state vector to be created
-            {
-                let state_vector_footprint = hilbert_dim * size_of_val(&Complex::new(0., 0.));
-                let bytes_to_gigabyte: u64 = 1 << 30;
-                debug!(
-                    "Allocating state vector of size: {:.4} Gb",
-                    (state_vector_footprint as f64) / (bytes_to_gigabyte as f64)
-                );
-            }
-
-            // creating the state vector
-            let mut state_vector = CVector::from_element(hilbert_dim, Complex::new(0., 0.));
-            // setting the (0, 0) element to 1 to represent initialisation in the |000...> state
-            state_vector[0] = Complex::new(1., 0.);
-            state_vector
-        };
-        let state_vector_pointer = StateVectorPointer::new(&mut state_vector[0], hilbert_dim);
-
-        let classical_register = vec![None; number_of_qubits];
-
-        StateVector {
-            number_of_qubits,
-            state_vector,
-            state_vector_pointer,
-            classical_register,
-        }
-    }
-
     pub fn get_measured_qubit_state(&self, target: usize) -> bool {
         match self.classical_register[target] {
             Some(qubit_state) => qubit_state,
